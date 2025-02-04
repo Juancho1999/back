@@ -9,6 +9,10 @@ ini_set('display_errors', 1);
 // Cargar el autoload de Composer
 require __DIR__ . '/vendor/autoload.php';
 
+require __DIR__ . '/vendor/phpmailer/phpmailer/PHPMailer.php';
+require __DIR__ . '/vendor/phpmailer/phpmailer/SMTP.php';
+require __DIR__ . '/vendor/phpmailer/phpmailer/Exception.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 

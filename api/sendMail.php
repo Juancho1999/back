@@ -1,6 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-die(var_dump('No se puede acceder a este archivo directamente'));
+//die(var_dump('No se puede acceder a este archivo directamente'));
 
 // Habilitar reporte de errores (ideal en desarrollo)
 error_reporting(E_ALL);
@@ -16,31 +16,23 @@ use PHPMailer\PHPMailer\Exception;
 $mail = new PHPMailer(true);
 
 try {
-    // Configuración del servidor SMTP
     $mail->isSMTP();
-    $mail->Host       = 'smtp.tuservidor.com'; // Reemplaza con tu servidor SMTP, por ejemplo: smtp.gmail.com
-    $mail->SMTPAuth   = true;
-    $mail->Username   = 'tu_correo@ejemplo.com'; // Tu dirección de correo
-    $mail->Password   = 'tu_contraseña';           // Tu contraseña
-    // Define el método de encriptación: 'tls' para el puerto 587 o 'ssl' para el puerto 465
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
-    $mail->Port       = 587; // Cambia al puerto 465 si usas SSL
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'iralajuan099@gmail.com'; // Configura tu email
+    $mail->Password = 'nuerkapjxardorap'; // App Password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = 587;
 
-    // Configurar remitente y destinatario(s)
-    $mail->setFrom('tu_correo@ejemplo.com', 'Tu Nombre');
-    $mail->addAddress('destinatario@ejemplo.com', 'Nombre Destinatario');
-    // Si necesitas enviar a varios destinatarios, usa:
-    // $mail->addAddress('otro@ejemplo.com');
+    $mail->setFrom($data->email, $data->name);
+    $mail->addAddress('iralajuan099@gmail.com'); // Cambia al email que recibirá los mensajes
+    $mail->Subject = 'Mensaje de Contacto: ' . $data->name;
+    $mail->Body = "Nombre: {$data->name}\nEmail: {$data->email}\nTeléfono: {$data->phone}\nMensaje: {$data->message}";
 
-    // Contenido del correo
-    $mail->isHTML(true); // El correo se enviará en HTML
-    $mail->Subject = 'Asunto del correo';
-    $mail->Body    = '<h1>Hola</h1><p>Este es un correo de prueba enviado desde el backend.</p>';
-    $mail->AltBody = 'Hola, este es un correo de prueba enviado desde el backend.';
-
-    // Enviar el correo
     $mail->send();
-    echo 'El mensaje se envió correctamente.';
+
+    echo json_encode(["status" => "success", "message" => "Correo enviado"]);
 } catch (Exception $e) {
-    echo "El mensaje no se pudo enviar. Error de PHPMailer: {$mail->ErrorInfo}";
+    echo json_encode(["status" => "error", "message" => $mail->ErrorInfo]);
 }
+?>
